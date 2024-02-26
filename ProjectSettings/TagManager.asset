@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ShipComponent
   - LineDrawer
+  - SFXPlayer
   layers:
   - Default
   - TransparentFX
