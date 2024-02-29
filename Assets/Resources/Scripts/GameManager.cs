@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject cardSlot;
+    [SerializeField] GameObject slots;
     [SerializeField] Ship playerShip;
 
     public List<Card> deck = new List<Card>();
@@ -13,12 +13,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        cardSlots = new Transform[cardSlot.transform.childCount];
+        cardSlots = new Transform[slots.transform.childCount];
         availableCardSlots = new bool[cardSlots.Length];
 
         for (int i = 0; i < cardSlots.Length; i++)
         {
-            cardSlots[i] = cardSlot.transform.GetChild(i);
+            cardSlots[i] = slots.transform.GetChild(i);
             availableCardSlots[i] = true;
         }
     }
