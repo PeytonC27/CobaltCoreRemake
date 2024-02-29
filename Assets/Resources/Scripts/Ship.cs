@@ -31,8 +31,8 @@ public class Ship : MonoBehaviour
         else if (input.PressingRight)
             MoveShip(1);
 
-        if (input.LeftClick)
-            Fire();
+        //if (input.LeftClick)
+        //    Fire();
 
         // move the ship's center
         transform.position = Vector3.Lerp(transform.position, newLocation, 20 * Time.deltaTime);
@@ -78,5 +78,10 @@ public class Ship : MonoBehaviour
                 }
             }  
         }
+    }
+
+    public void CardAction(Card card)
+    {
+        Debug.Log(card.name + " was played!");
     }
 }

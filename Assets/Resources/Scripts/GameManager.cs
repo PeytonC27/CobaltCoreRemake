@@ -4,9 +4,24 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameObject cardSlot;
+    [SerializeField] Ship playerShip;
+
     public List<Card> deck = new List<Card>();
     public Transform[] cardSlots;
     public bool[] availableCardSlots;
+
+    private void Start()
+    {
+        cardSlots = new Transform[cardSlot.transform.childCount];
+        availableCardSlots = new bool[cardSlots.Length];
+
+        for (int i = 0; i < cardSlots.Length; i++)
+        {
+            cardSlots[i] = cardSlot.transform.GetChild(i);
+            availableCardSlots[i] = true;
+        }
+    }
 
     public void DrawCard()
     {
@@ -19,6 +34,8 @@ public class GameManager : MonoBehaviour
                 if (availableCardSlots[i])
                 {
                     randCard.gameObject.SetActive(true);
+                    randCard.handIndex = i;
+
                     randCard.transform.position = cardSlots[i].position;
                     availableCardSlots[i] = false;
                     deck.Remove(randCard);
@@ -35,5 +52,8 @@ public class GameManager : MonoBehaviour
             for (int i = 0;i < 5; i++)
                 DrawCard();
         }
+
+        // update slots
+
     }
 }
