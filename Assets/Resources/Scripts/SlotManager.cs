@@ -5,7 +5,7 @@ using UnityEngine;
 public class SlotManager : MonoBehaviour
 {
     [SerializeField] GameObject slot;
-    [SerializeField] int cardsToDraw;
+    [SerializeField] public int cardsToDraw;
     [SerializeField] float startX;
     [SerializeField] float endX;
     [SerializeField] float yPos;

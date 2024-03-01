@@ -36,7 +36,7 @@ public abstract class Card : MonoBehaviour
             }
 
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = 5;
-            transform.localScale = new Vector2(1.2f, 1.2f);
+            transform.localScale = new Vector2(1.1f, 1.1f);
         }
 
         // otherwise it's not played
