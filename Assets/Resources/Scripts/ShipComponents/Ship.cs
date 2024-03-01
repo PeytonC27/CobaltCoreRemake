@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
@@ -8,15 +9,20 @@ public class Ship : MonoBehaviour
     [SerializeField] int maxHealth;
     InputManager input;
     protected int health;
+    public int moves;
+    public int damageBuff;
 
     protected Vector3 newLocation;
     protected HealthBar healthBar;
+    protected TMP_Text moveDisplay;
     protected LineDrawer lineDrawer;
 
     private void Start()
     {
         input = GetComponent<InputManager>();
         healthBar = GetComponentInChildren<HealthBar>();
+        moveDisplay = gameObject.transform.Find("EvasionDisplay").GetComponentInChildren<TMP_Text>();
+
         lineDrawer = GameObject.FindGameObjectWithTag("LineDrawer").GetComponent<LineDrawer>();
         BuildShip();
         newLocation = transform.position;
@@ -26,16 +32,17 @@ public class Ship : MonoBehaviour
 
     void Update()
     {
-        if (input.PressingLeft)
+        // movement
+        if (input.PressingLeft && moves > 0)
             MoveShip(-1);
-        else if (input.PressingRight)
+        else if (input.PressingRight && moves > 0)
             MoveShip(1);
-
-        //if (input.LeftClick)
-        //    Fire();
 
         // move the ship's center
         transform.position = Vector3.Lerp(transform.position, newLocation, 20 * Time.deltaTime);
+
+        // update text
+        moveDisplay.text = moves.ToString();
     }
 
     protected void BuildShip()
@@ -54,9 +61,10 @@ public class Ship : MonoBehaviour
     protected void MoveShip(short shamt)
     {
         newLocation = newLocation + new Vector3(shamt, 0);
+        moves--;
     }
 
-    void Fire()
+    public void Fire(int damage)
     {
         foreach (var part in shipParts)
         {
@@ -71,7 +79,7 @@ public class Ship : MonoBehaviour
                     Debug.Log("Shot enemy!");
 
                     // have the enemy take damage
-                    hit.transform.parent.gameObject.GetComponentInChildren<HealthBar>().TakeDamage(gun.GetDamage());
+                    hit.transform.parent.gameObject.GetComponentInChildren<HealthBar>().TakeDamage(damage);
 
                     // drawing the effect
                     lineDrawer.Draw(gun.transform, hit.transform);

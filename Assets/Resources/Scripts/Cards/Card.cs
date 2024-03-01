@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+public abstract class Card : MonoBehaviour
 {
-    AudioSource audioPlayer;
-    GameManager gameManager;
+    protected AudioSource audioPlayer;
+    protected GameManager gameManager;
 
-    bool audioPlayed = false;
+    protected bool audioPlayed = false;
     
     public bool WasPlayed { get; private set; }
     public int handIndex;
@@ -36,6 +36,7 @@ public class Card : MonoBehaviour
             }
 
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = 5;
+            transform.localScale = new Vector2(1.2f, 1.2f);
         }
 
         // otherwise it's not played
@@ -43,16 +44,22 @@ public class Card : MonoBehaviour
         {
             audioPlayed = false;
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
+            transform.localScale = new Vector2(1, 1);
         }
+
+        //transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(1, 1), Time.deltaTime * 20);
     }
 
-    private void OnMouseDown()
+    protected abstract void Action(Ship ship);
+
+    protected void OnMouseDown()
     {
         if (!WasPlayed)
         {
             // do stuff
             WasPlayed = true;
             gameManager.availableCardSlots[handIndex] = true;
+            gameManager.PerformShipAction(Action);
             gameObject.SetActive(false);
         }
     }

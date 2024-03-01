@@ -1,33 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject cardSlot;
+    [SerializeField] GameObject cardSlotHolder;
     [SerializeField] Ship playerShip;
+    [SerializeField] GameObject cardHolder;
 
-    public List<Card> deck = new List<Card>();
-    public Transform[] cardSlots;
+    private List<Card> deck = new List<Card>();
+    private Transform[] cardSlots;
     public bool[] availableCardSlots;
 
     private void Start()
     {
-        cardSlots = new Transform[cardSlot.transform.childCount];
+        cardSlots = new Transform[cardSlotHolder.transform.childCount];
         availableCardSlots = new bool[cardSlots.Length];
 
         for (int i = 0; i < cardSlots.Length; i++)
         {
-            cardSlots[i] = cardSlot.transform.GetChild(i);
+            cardSlots[i] = cardSlotHolder.transform.GetChild(i);
             availableCardSlots[i] = true;
         }
+
+        for (int i = 0; i < cardHolder.transform.childCount; i++)
+            deck.Add(cardHolder.transform.GetChild(i).GetComponent<Card>());
     }
 
     public void DrawCard()
     {
         if (deck.Count > 0) 
         {
-            Card randCard = deck[Random.Range(0,deck.Count)];
+            Card randCard = deck[UnityEngine.Random.Range(0,deck.Count)];
 
             for (int i = 0; i < availableCardSlots.Length; i++)
             {
@@ -55,5 +60,10 @@ public class GameManager : MonoBehaviour
 
         // update slots
 
+    }
+
+    public void PerformShipAction(Action<Ship> cardAction)
+    {
+        cardAction.Invoke(playerShip);
     }
 }
