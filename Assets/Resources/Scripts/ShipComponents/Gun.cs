@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class Gun : ShipComponent
 {
+    private AudioSource fireSound;
+
+    private void Start()
+    {
+        fireSound = GetComponent<AudioSource>();
+    }
 
     public bool IsStunned { get; private set; }
 
@@ -18,5 +24,8 @@ public class Gun : ShipComponent
         IsStunned = false;
     }
 
-    
+    public void PlayGunSound()
+    {
+        fireSound.Play();
+    }
 }

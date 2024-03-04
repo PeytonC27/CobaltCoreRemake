@@ -83,6 +83,9 @@ public class Ship : MonoBehaviour
 
                     // drawing the effect
                     lineDrawer.Draw(gun.transform, hit.transform);
+
+                    // playing the sound
+                    gun.PlayGunSound();
                 }
             }  
         }

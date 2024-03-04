@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Scramble : Card
 {
-    protected override void Action(Ship ship)
+    public override void Action(Ship ship)
     {
         ship.moves += 2;
     }
