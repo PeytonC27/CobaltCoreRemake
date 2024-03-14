@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
-    [SerializeField] ShipComponent[] shipParts;
-    [SerializeField] int maxHealth;
+    [SerializeField] protected ShipComponent[] shipParts;
+    [SerializeField] protected int maxHealth;
     InputManager input;
     protected int health;
     public int moves;
@@ -16,6 +16,11 @@ public class Ship : MonoBehaviour
     protected HealthBar healthBar;
     protected TMP_Text moveDisplay;
     protected LineDrawer lineDrawer;
+
+    public int Parts
+    {
+        get { return shipParts.Length; }
+    }
 
     private void Start()
     {
@@ -64,7 +69,7 @@ public class Ship : MonoBehaviour
         moves--;
     }
 
-    public void Fire(int damage)
+    public virtual void Fire(int damage)
     {
         foreach (var part in shipParts)
         {

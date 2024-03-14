@@ -7063,6 +7063,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3609684673666185544, guid: 38d63b23ff5603c4aa4e8905676291d3, type: 3}
+      propertyPath: enemyShip
+      value: 
+      objectReference: {fileID: 113288677}
+    - target: {fileID: 3609684673666185544, guid: 38d63b23ff5603c4aa4e8905676291d3, type: 3}
       propertyPath: cardHolder
       value: 
       objectReference: {fileID: 82587885}

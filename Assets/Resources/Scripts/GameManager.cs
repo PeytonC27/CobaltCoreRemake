@@ -1,18 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] SlotManager slotManager;
     [SerializeField] Ship playerShip;
+    [SerializeField] EnemyShip enemyShip;
     [SerializeField] GameObject cardHolder;
 
     private List<Card> deck = new List<Card>();
     private List<Card> hand = new List<Card>();
     private List<Transform> cardSlots;
     public List<bool> availableCardSlots;
+
+    private bool playerTurn = true;
+    private int energy;
 
     private void Start()
     {
@@ -69,8 +74,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Added new cards");
     }
 
-    public void OnCardPlayed(Card card)
+    public bool OnCardPlayed(Card card)
     {
+        if (energy <= 0)
+            return false;
+
         availableCardSlots.RemoveAt(card.handIndex);
         hand.RemoveAt(card.handIndex);
         slotManager.RemoveSlots(1);
@@ -79,23 +87,46 @@ public class GameManager : MonoBehaviour
         ResetAndTransformCards();
 
         PerformShipAction(card.Action);
+
+        energy--;
+
+        return true;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (playerTurn)
         {
-            for (int i = 0;i < 5; i++)
+            playerTurn = false;
+            for (int i = 0; i < 5; i++)
                 DrawCard();
+            energy = 3;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (!playerTurn && Input.GetKeyDown(KeyCode.Tab))
         {
-            DrawAdditionalCards(2);
+            StartCoroutine(runEnemyTurn());
         }
 
         // update slots
 
+    }
+
+    IEnumerator runEnemyTurn()
+    {
+        // shoot their gun
+        StartCoroutine(enemyShip.FireCannons(1));
+
+        yield return new WaitForSeconds(0.5f);
+
+        // enemy will align to player's ship randomly
+        int playerShipSize = playerShip.Parts;
+        enemyShip.Move(
+            (short)-(enemyShip.transform.position.x - playerShip.transform.position.x +
+            UnityEngine.Random.Range(-playerShipSize / 2, playerShipSize / 2 + 1))
+        );
+
+        playerTurn = true;
     }
 
     public void PerformShipAction(Action<Ship> cardAction)

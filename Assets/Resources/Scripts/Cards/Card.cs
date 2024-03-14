@@ -52,12 +52,11 @@ public abstract class Card : MonoBehaviour
 
     protected void OnMouseDown()
     {
-        if (!WasPlayed)
+        if (gameManager.OnCardPlayed(this) && !WasPlayed)
         {
             // do stuff
             WasPlayed = true;
             gameObject.SetActive(false);
-            gameManager.OnCardPlayed(this);
         }
     }
 

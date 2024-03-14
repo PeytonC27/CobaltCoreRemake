@@ -6,6 +6,6 @@ public class BasicDodge : Card
 {
     public override void Action(Ship ship)
     {
-        ship.moves++;
+        ship.moves+=5;
     }
 }
